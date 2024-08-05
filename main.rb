@@ -33,20 +33,7 @@ MAX_TURNS = 8
 
 
 # your script should load in the dictionary and randomly select a word between 5 and 12 characters
-path_file = 'D:\00_main_job\main\English\23_11_interview\Course\repos\hangman-game\google-10000-english-no-swears.txt'
-
-words = File.readlines(path_file).map(&:chomp).select { |word| word.length.between?(5, 12) }
-random_word = words.sample
-puts random_word
-
-def initialize_turns
-  Array.new(8, ' ')
-end
-
-def display_letters(letter)
-  puts " #{letter[0]}" + "#{letter[1]}" + "#{letter[2]} + #{letter[3]}" + "#{letter[4]}" + "#{letter[5]} + #{letter[6]}" + "#{letter[7]}" + "#{letter[8]}"
-  puts ' _' + '_' + '_' + '_' + '_' + '_' + '_' + '_ '
-end
+PATH_FILE = 'D:\00_main_job\main\English\23_11_interview\Course\repos\hangman-game\google-10000-english-no-swears.txt'
 
 def display_hangman(incorrect_guesses)
   hangman_stages = [
@@ -135,6 +122,7 @@ def message_for_players
   puts "You have #{MAX_TURNS - turns_taken} turns left."
 end
 
+# take a Hangman or Player position
 def choose_position
   puts 'Choose your position h - Hangman or p - Player:'
   position = gets.chomp.downcase
@@ -161,4 +149,37 @@ def current_players(position)
   end
 end
 
-current_players(choose_position)
+# actions for Hangman
+def choose_word
+  words = File.readlines(PATH_FILE).map(&:chomp).select { |word| word.length.between?(5, 12) }
+  random_word = words.sample
+  random_word
+end
+
+def initialize_turns(choose_word)
+  Array.new(choose_word.length, ' ')
+end
+
+
+# display_letters to dynamically handle the length of the letters array
+def display_letters(choose_word)
+  # Print letters with spaces between them
+  letters_display = choose_word.chars.join(' ')
+  puts letters_display
+  
+  # Print underscores directly below each letter
+  underscores_display = choose_word.chars.map { '_' }.join(' ')
+  puts underscores_display
+end
+
+
+
+
+def play_game
+  position = choose_position
+  current_players(position)
+  chosen_word = choose_word
+  display_letters(chosen_word)
+end
+
+play_game
