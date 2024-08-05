@@ -135,3 +135,30 @@ def message_for_players
   puts "You have #{MAX_TURNS - turns_taken} turns left."
 end
 
+def choose_position
+  puts 'Choose your position h - Hangman or p - Player:'
+  position = gets.chomp.downcase
+  until %w[h p].include?(position)
+    puts red_color('Invalid input. Please enter a valid string of h or p ' + "#{MUSHROOM_EMOJI}")
+    position = gets.chomp.downcase
+  end
+  position
+end
+
+# Assign positions to current players
+def current_players(position)
+  if position == 'h'
+    puts yellow_color("Player 1 plays Hangman position")
+    puts yellow_color("Player 2 plays Player position")
+    ['h', 'p']
+  elsif position == 'p'
+    puts yellow_color("Player 1 plays Player position")
+    puts yellow_color("Player 2 plays Hangman position")    
+    ['p', 'h']
+  else
+    puts red_color("Invalid choice. Please choose 'X' or 'O'. #{MUSHROOM_EMOJI}")
+    choose_position
+  end
+end
+
+current_players(choose_position)
