@@ -134,7 +134,7 @@ def choose_position
 end
 
 # Assign positions to current players
-def current_players(position)
+def current_players position
   if position == 'h'
     puts yellow_color("Player 1 plays Hangman position")
     puts yellow_color("Player 2 plays Player position")
@@ -156,23 +156,40 @@ def choose_word
   random_word
 end
 
-def initialize_turns(choose_word)
+def initialize_turns choose_word
   Array.new(choose_word.length, ' ')
 end
 
-
 # display_letters to dynamically handle the length of the letters array
-def display_letters(choose_word)
+def display_letters choose_word 
   # Print letters with spaces between them
   letters_display = choose_word.chars.join(' ')
   puts letters_display
   
   # Print underscores directly below each letter
   underscores_display = choose_word.chars.map { '_' }.join(' ')
-  puts underscores_display
+  puts green_color(underscores_display)
 end
 
+# actions for Player
+def guess_letter
+  puts 'Write your letter, pls'
+  letter = gets.chomp.downcase
+  letter
+end
 
+def guessing_words guess_letter
+  puts "Is there letter #{guess_letter} in your words?"
+  search_letter_in_word(guess_letter, choose_word)
+end
+
+def search_letter_in_word word, letter_to_check 
+  if word.include?(letter_to_check)
+    puts "#{letter_to_check} is present in #{word}"
+  else
+    puts "#{letter_to_check} is not present in #{word}"
+  end
+end
 
 
 def play_game
@@ -180,6 +197,9 @@ def play_game
   current_players(position)
   chosen_word = choose_word
   display_letters(chosen_word)
+  puts
+  guessing_words(guess_letter)
+  
 end
 
 play_game
