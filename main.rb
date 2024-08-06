@@ -139,7 +139,7 @@ def current_players position
     ['h', 'p']
   elsif position == 'p'
     puts yellow_color("Player 1 plays Player position")
-    puts yellow_color("Player 2 plays Hangman position")    
+    puts yellow_color("Player 2 plays Hangman position")
     ['p', 'h']
   else
     puts red_color("Invalid choice. Please choose 'X' or 'O'. #{MUSHROOM_EMOJI}")
@@ -157,7 +157,15 @@ def initialize_turns word
   Array.new(word.length, ' ')
 end
 
-# display_letters to dynamically handle the length of the letters array
+# display only letters, not digits, not symbols
+def clean_display letter
+  unless letter.match?(/\A[a-zA-Z]\z/)
+    puts red_color("Invalid choice. Only letters are allowed and only 1 letter at a time.")
+    return false
+  end
+  true
+end
+
 def display_spaces word, guessed_letters
   display_word = word.chars.map { |char| guessed_letters.include?(char) ? green_color(char) : '_' }.join(' ')
   puts
@@ -169,15 +177,17 @@ end
 def guess_letter
   puts 'Write your letter, pls'
   letter = gets.chomp.downcase
+  until clean_display(letter)
+    letter = gets.chomp.downcase
+  end
   puts "Is there letter #{letter} in your word?"
   letter
 end
 
-def search_letter_in_word? word, letter_to_check 
+def search_letter_in_word? word, letter_to_check
   word.include?(letter_to_check)
 end
 
-# Game loop
 def play_game
   position = choose_position
   current_players(position)
@@ -207,7 +217,7 @@ def play_game
       puts red_color("\n\nIncorrect. The letter '#{letter}' is not in the word.")
       incorrect_guesses += 1
     end
-
+    
     display_hangman(incorrect_guesses)
 
     if save_word.chars.all? { |char| guessed_letters.include?(char) }
