@@ -1,25 +1,6 @@
 require 'colorize'
-# * colorizing methods
+require 'yaml'  # Ensure the yaml library is required
 
-def blue_color(string)
-  string.colorize(:blue)
-end
-
-def yellow_color(string)
-  string.colorize(:yellow)
-end
-
-def green_color(string)
-  string.colorize(:green)
-end
-
-def red_color(string)
-  string.colorize(:red)
-end
-
-def gray_color(string)
-  string.colorize(:gray)
-end
 
 # all constants of symbols
 CELEBRATION_SYMBOL = "\u{1F389}"
@@ -121,12 +102,43 @@ a8"     "" a8"     "8a 88P'   `"8a a8"    `Y88 88P'   "Y8 ""     `Y8   88     I8
                                      "Y8bbdP"
   MESSAGE
 
-  puts green_color(message)
+  puts message.colorize(:green)
 end
 
+def display_game_over_message
+  message = <<-MESSAGE
+    ┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼
+    ███▀▀▀██┼███▀▀▀███┼███▀█▄█▀███┼██▀▀▀
+    ██┼┼┼┼██┼██┼┼┼┼┼██┼██┼┼┼█┼┼┼██┼██┼┼┼
+    ██┼┼┼▄▄▄┼██▄▄▄▄▄██┼██┼┼┼▀┼┼┼██┼██▀▀▀
+    ██┼┼┼┼██┼██┼┼┼┼┼██┼██┼┼┼┼┼┼┼██┼██┼┼┼
+    ███▄▄▄██┼██┼┼┼┼┼██┼██┼┼┼┼┼┼┼██┼██▄▄▄
+    ┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼
+    ███▀▀▀███┼▀███┼┼██▀┼██▀▀▀┼██▀▀▀▀██▄┼
+    ██┼┼┼┼┼██┼┼┼██┼┼██┼┼██┼┼┼┼██┼┼┼┼┼██┼
+    ██┼┼┼┼┼██┼┼┼██┼┼██┼┼██▀▀▀┼██▄▄▄▄▄▀▀┼
+    ██┼┼┼┼┼██┼┼┼██┼┼█▀┼┼██┼┼┼┼██┼┼┼┼┼██┼
+    ███▄▄▄███┼┼┼─▀█▀┼┼─┼██▄▄▄┼██┼┼┼┼┼██▄
+    ┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼██┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼██┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼████▄┼┼┼▄▄▄▄▄▄▄┼┼┼▄████┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼▀▀█▄█████████▄█▀▀┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼┼█████████████┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼┼██▀▀▀███▀▀▀██┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼┼██┼┼┼███┼┼┼██┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼┼█████▀▄▀█████┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼┼┼███████████┼┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼▄▄▄██┼┼█▀█▀█┼┼██▄▄▄┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼▀▀██┼┼┼┼┼┼┼┼┼┼┼██▀▀┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼▀▀┼┼┼┼┼┼┼┼┼┼┼▀▀┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼
+  MESSAGE
+
+  puts message.colorize(:green)
+end
 
 def turns_taken incorrect_guesses
-   puts blue_color("Player has #{MAX_TURNS - incorrect_guesses} turns left.")
+   puts ("Player has #{MAX_TURNS - incorrect_guesses} turns left.").colorize(:blue)
 end
 
 # take a Hangman or Player position
@@ -134,7 +146,7 @@ def choose_position
   puts 'Choose your position h - Hangman or p - Player:'
   position = gets.chomp.downcase
   until %w[h p].include?(position)
-    puts red_color('Invalid input. Please enter a valid string of h or p ' + "#{MUSHROOM_EMOJI}")
+    puts ('Invalid input. Please enter a valid string of h or p ' + "#{MUSHROOM_EMOJI}").colorize( :background => :red)
     position = gets.chomp.downcase
   end
   position
@@ -143,17 +155,17 @@ end
 # Assign positions to current players
 def current_players position
   if position == 'h'
-    puts yellow_color("Player 1 plays Hangman position")
-    puts yellow_color("Player 2 plays Player position")
+    puts ("Player 1 plays Hangman position").colorize(:yellow)
+    puts ("Player 2 plays Player position").colorize(:yellow)
     ['h', 'p']
     hangman_choose_word
   elsif position == 'p'
-    puts yellow_color("Player 1 plays Player position")
-    puts yellow_color("Player 2 plays Hangman position")
+    puts ("Player 1 plays Player position").colorize(:yellow)
+    puts ("Player 2 plays Hangman position").colorize(:yellow)
     ['p', 'h']
     choose_word
   else
-    puts red_color("Invalid choice. Please choose 'X' or 'O'. #{MUSHROOM_EMOJI}")
+    puts ("Invalid choice. Please choose 'X' or 'O'. #{MUSHROOM_EMOJI}").colorize( :background => :red)
     choose_position
   end
 end
@@ -161,10 +173,10 @@ end
 # actions for Hangman
 
 def hangman_choose_word
-  puts yellow_color('Choose a word for the Player to guess:')
+  puts ('Choose a word for the Player to guess:').colorize(:yellow)
   word = gets.chomp.downcase
   until word.match?(/\A[a-zA-Z]{5,12}\z/)
-    puts red_color("Invalid choice. Please enter a word with 5 to 12 letters.")
+    puts ("Invalid choice. Please enter a word with 5 to 12 letters.").colorize( :background => :red)
     word = gets.chomp.downcase
   end
   word
@@ -181,14 +193,14 @@ end
 
 def clean_display letter
   unless letter.match?(/\A[a-zA-Z]\z/)
-    puts red_color("Invalid choice. Only letters are allowed and only 1 letter at a time.")
+    puts ("Invalid choice. Only letters are allowed and only 1 letter at a time.").colorize( :background => :red)
     return false
   end
   true
 end
 
 def display_spaces word, guessed_letters
-  display_word = word.chars.map { |char| guessed_letters.include?(char) ? green_color(char) : '_' }.join(' ')
+  display_word = word.chars.map { |char| guessed_letters.include?(char) ? char.colorize(:green) : '_' }.join(' ')
   puts
   puts display_word
   puts
@@ -209,13 +221,35 @@ def search_letter_in_word? word, letter_to_check
   word.include?(letter_to_check)
 end
 
-def play_game
-  position = choose_position
+def save_game state
+  File.open("D:/00_main_job/main/English/23_11_interview/Course/repos/hangman-game/saved_game.yaml", "w") { |file| file.write(state.to_yaml) }
+  puts ("Game has been saved!").colorize(:green)
+end
 
-  save_word = current_players(position)
-  incorrect_guesses = 0
-  guessed_letters = []
-  initialize_turns(save_word)
+def load_game
+  YAML.load_file("D:/00_main_job/main/English/23_11_interview/Course/repos/hangman-game/saved_game.yaml")
+end
+
+def save_or_continue
+  puts ('Would you like to (s)ave the game or (c)ontinue playing?')
+  choice = gets.chomp.downcase
+  until %w[s c].include?(choice)
+    puts ('Invalid input. Please enter a valid string of s or c ' + "#{MUSHROOM_EMOJI}").colorize( :background => :red)
+    choice = gets.chomp.downcase
+  end
+  choice
+end
+
+def play_game state = nil
+  if state.nil?
+    position = choose_position
+    save_word = current_players(position)
+    incorrect_guesses = 0
+    guessed_letters = []
+    initialize_turns(save_word)
+  else
+    save_word, incorrect_guesses, guessed_letters = state
+  end
  
   while incorrect_guesses < MAX_TURNS
     display_spaces(save_word, guessed_letters)
@@ -223,17 +257,17 @@ def play_game
     letter = guess_letter
 
     if guessed_letters.include?(letter)
-      puts yellow_color("\n\nYou've already guessed the letter '#{letter}'. Try another one.")
+      puts ("\n\nYou've already guessed the letter '#{letter}'. Try another one.").colorize(:yellow)
       next
     end
     guessed_letters << letter
 
     if search_letter_in_word?(save_word, letter)
       sleep 1
-      puts green_color("\n\nCorrect! The letter '#{letter}' is in the word.")
+      puts ("\n\nCorrect! The letter '#{letter}' is in the word.").colorize(:green)
     else
       sleep 1
-      puts red_color("\n\nIncorrect. The letter '#{letter}' is not in the word.")
+      puts ("\n\nIncorrect. The letter '#{letter}' is not in the word.").colorize(:red)
       incorrect_guesses += 1
     end
 
@@ -246,10 +280,41 @@ def play_game
     end
 
     if incorrect_guesses == MAX_TURNS
-      puts red_color("Game over! The word was '#{save_word}'.")
+      puts ("The word was '#{save_word}'. \n").colorize(:red)
+      display_game_over_message
+    end
+
+    # Display the word before asking to save or continue
+    display_spaces(save_word, guessed_letters)
+    
+    choice = save_or_continue
+    if choice == 's'
+      save_game([save_word, incorrect_guesses, guessed_letters])
+      break
     end
 
   end
 end
 
-play_game
+def main_menu
+  puts 'Would you like to (s)tart a new game or (l)oad a saved game?'
+  choice = gets.chomp.downcase
+  until %w[s l].include?(choice)
+    puts ('Invalid input. Please enter a valid string of s or l ' + "#{MUSHROOM_EMOJI}").colorize( :background => :red)
+    choice = gets.chomp.downcase
+  end
+
+  if choice == 'l'
+    if File.exist?("D:/00_main_job/main/English/23_11_interview/Course/repos/hangman-game/saved_game.yaml")
+      state = load_game
+      play_game(state)
+    else
+      puts ("No saved game found. Starting a new game.").colorize(:red)
+      play_game
+    end
+  else
+    play_game
+  end
+end
+
+main_menu
