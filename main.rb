@@ -38,6 +38,8 @@ PATH_FILE = 'D:\00_main_job\main\English\23_11_interview\Course\repos\hangman-ga
 def display_hangman(incorrect_guesses)
   hangman_stages = [
     """
+    """,
+    """
       -----
           |
           |
@@ -77,7 +79,7 @@ def display_hangman(incorrect_guesses)
       -----
           |
       O   |
-     /|\\  |
+     /|\\ |
           |
           |
     --------
@@ -114,12 +116,8 @@ def display_hangman(incorrect_guesses)
   puts hangman_stages[incorrect_guesses]
 end
 
-def turns_taken
-  1
-end
-
-def message_for_players
-  puts "You have #{MAX_TURNS - turns_taken} turns left."
+def turns_taken incorrect_guesses
+   puts blue_color("You have #{MAX_TURNS - incorrect_guesses} turns left.")
 end
 
 # take a Hangman or Player position
@@ -152,54 +150,75 @@ end
 # actions for Hangman
 def choose_word
   words = File.readlines(PATH_FILE).map(&:chomp).select { |word| word.length.between?(5, 12) }
-  random_word = words.sample
-  random_word
+  words.sample
 end
 
-def initialize_turns choose_word
-  Array.new(choose_word.length, ' ')
+def initialize_turns word
+  Array.new(word.length, ' ')
 end
 
 # display_letters to dynamically handle the length of the letters array
-def display_letters choose_word 
-  # Print letters with spaces between them
-  letters_display = choose_word.chars.join(' ')
-  puts letters_display
-  
-  # Print underscores directly below each letter
-  underscores_display = choose_word.chars.map { '_' }.join(' ')
-  puts green_color(underscores_display)
+def display_spaces word, guessed_letters
+  display_word = word.chars.map { |char| guessed_letters.include?(char) ? green_color(char) : '_' }.join(' ')
+  puts
+  puts display_word
+  puts
 end
 
 # actions for Player
 def guess_letter
   puts 'Write your letter, pls'
   letter = gets.chomp.downcase
+  puts "Is there letter #{letter} in your word?"
   letter
 end
 
-def guessing_words guess_letter
-  puts "Is there letter #{guess_letter} in your words?"
-  search_letter_in_word(guess_letter, choose_word)
+def search_letter_in_word? word, letter_to_check 
+  word.include?(letter_to_check)
 end
 
-def search_letter_in_word word, letter_to_check 
-  if word.include?(letter_to_check)
-    puts "#{letter_to_check} is present in #{word}"
-  else
-    puts "#{letter_to_check} is not present in #{word}"
-  end
-end
-
-
+# Game loop
 def play_game
   position = choose_position
   current_players(position)
-  chosen_word = choose_word
-  display_letters(chosen_word)
-  puts
-  guessing_words(guess_letter)
-  
+
+  save_word = choose_word
+  incorrect_guesses = 0
+  guessed_letters = []
+  initialize_turns(save_word)
+ 
+  while incorrect_guesses < MAX_TURNS
+    display_spaces(save_word, guessed_letters)
+    turns_taken(incorrect_guesses)
+    letter = guess_letter
+
+    if guessed_letters.include?(letter)
+      puts yellow_color("\n\nYou've already guessed the letter '#{letter}'. Try another one.")
+      next
+    end
+
+    guessed_letters << letter
+
+    if search_letter_in_word?(save_word, letter)
+      sleep 1
+      puts green_color("\n\nCorrect! The letter '#{letter}' is in the word.")
+    else
+      sleep 1
+      puts red_color("\n\nIncorrect. The letter '#{letter}' is not in the word.")
+      incorrect_guesses += 1
+    end
+
+    display_hangman(incorrect_guesses)
+
+    if save_word.chars.all? { |char| guessed_letters.include?(char) }
+      puts CELEBRATION_SYMBOL + " You guessed the word '#{save_word}'! " + CELEBRATION_SYMBOL
+      break
+    end
+
+    if incorrect_guesses == MAX_TURNS
+      puts red_color("Game over! The word was '#{save_word}'.")
+    end
+  end
 end
 
 play_game
