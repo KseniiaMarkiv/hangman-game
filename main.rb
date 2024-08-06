@@ -137,10 +137,12 @@ def current_players position
     puts yellow_color("Player 1 plays Hangman position")
     puts yellow_color("Player 2 plays Player position")
     ['h', 'p']
+    hangman_choose_word
   elsif position == 'p'
     puts yellow_color("Player 1 plays Player position")
     puts yellow_color("Player 2 plays Hangman position")
     ['p', 'h']
+    choose_word
   else
     puts red_color("Invalid choice. Please choose 'X' or 'O'. #{MUSHROOM_EMOJI}")
     choose_position
@@ -148,16 +150,26 @@ def current_players position
 end
 
 # actions for Hangman
-def choose_word
-  words = File.readlines(PATH_FILE).map(&:chomp).select { |word| word.length.between?(5, 12) }
-  words.sample
+
+def hangman_choose_word
+  puts yellow_color('Choose a word for the Player to guess:')
+  word = gets.chomp.downcase
+  until word.match?(/\A[a-zA-Z]{5,12}\z/)
+    puts red_color("Invalid choice. Please enter a word with 5 to 12 letters.")
+    word = gets.chomp.downcase
+  end
+  word
 end
 
+def choose_word
+  word = File.readlines(PATH_FILE).map(&:chomp).select { |word| word.length.between?(5, 12) }
+  word.sample
+end
+# current_players(position) == 'h' ? puts 'Choose a word for Hangman: ' : 
 def initialize_turns word
   Array.new(word.length, ' ')
 end
 
-# display only letters, not digits, not symbols
 def clean_display letter
   unless letter.match?(/\A[a-zA-Z]\z/)
     puts red_color("Invalid choice. Only letters are allowed and only 1 letter at a time.")
@@ -190,9 +202,9 @@ end
 
 def play_game
   position = choose_position
-  current_players(position)
+  # current_players(position)
 
-  save_word = choose_word
+  save_word = current_players(position)
   incorrect_guesses = 0
   guessed_letters = []
   initialize_turns(save_word)
