@@ -65,5 +65,14 @@ ruby hangman_game.rb
 - The game will display the hangman stages as incorrect guesses are made.
 - Save or continue the game as needed.
 
+![alt text](https://github.com/KseniiaMarkiv/hangman-game/blob/start-game/show_first.png?raw=true)
+
+<br>
+
+- Game shows when you win and lose:
+![alt text](https://github.com/KseniiaMarkiv/hangman-game/blob/start-game/show_over.png?raw=true)
+<br>
+![alt text](https://github.com/KseniiaMarkiv/hangman-game/blob/start-game/show_win.png?raw=true)
+
 ## Credits
 This game was created using Ruby and the `colorize` gem. Special thanks to the developers of these tools for making this project possible.
