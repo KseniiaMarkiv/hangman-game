@@ -8,6 +8,7 @@ Welcome to the Hangman Game! This project is a simple command-line game where pl
 - [Features](#features)
 - [Example](#example)
 - [Credits](#credits)
+- [You can improve](you_can_improve)
 
 ## Installation
 
@@ -17,9 +18,10 @@ To set up the Hangman Game on your local machine, follow these steps:
    ```
    git clone https://github.com/yourusername/hangman-game.git
    ```
+   
    ```
    cd hangman-game
-  ```
+   ```
 
 2. **Install Dependencies:**
 Make sure you have Ruby installed. Then, install the required gems by running:
@@ -70,9 +72,21 @@ ruby hangman_game.rb
 <br>
 
 - Game shows when you win and lose:
+
 ![alt text](https://github.com/KseniiaMarkiv/hangman-game/blob/start-game/show_over.png?raw=true)
 <br>
+
 ![alt text](https://github.com/KseniiaMarkiv/hangman-game/blob/start-game/show_win.png?raw=true)
 
 ## Credits
 This game was created using Ruby and the `colorize` gem. Special thanks to the developers of these tools for making this project possible.
+
+## You can improve
+1. accept of guessing the whole word;
+2. make easier game when Hangman gives you a hint:
+      - first letter;
+      - last letter;
+      - two identical letters in a word;
+      - accept the whole word after 3 guess turns of Player;
+
+
