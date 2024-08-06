@@ -31,11 +31,10 @@ AIM_SYMBOL = "\u{1F3AF}"
 # display some sort of count so the player knows how many more incorrect guesses they have before the game ends
 MAX_TURNS = 8
 
-
 # your script should load in the dictionary and randomly select a word between 5 and 12 characters
 PATH_FILE = 'D:\00_main_job\main\English\23_11_interview\Course\repos\hangman-game\google-10000-english-no-swears.txt'
 
-def display_hangman(incorrect_guesses)
+def display_hangman incorrect_guesses
   hangman_stages = [
     """
     """,
@@ -46,7 +45,6 @@ def display_hangman(incorrect_guesses)
           |
           |
           |
-    --------
     """,
     """
       -----
@@ -55,7 +53,6 @@ def display_hangman(incorrect_guesses)
           |
           |
           |
-    --------
     """,
     """
       -----
@@ -64,7 +61,6 @@ def display_hangman(incorrect_guesses)
       |   |
           |
           |
-    --------
     """,
     """
       -----
@@ -73,7 +69,6 @@ def display_hangman(incorrect_guesses)
       |\\ |
           |
           |
-    --------
     """,
     """
       -----
@@ -82,7 +77,6 @@ def display_hangman(incorrect_guesses)
      /|\\ |
           |
           |
-    --------
     """,
     """
       -----
@@ -91,7 +85,6 @@ def display_hangman(incorrect_guesses)
      /|\\  |
        \\  |
           |
-    --------
     """,
     """
       -----
@@ -100,7 +93,6 @@ def display_hangman(incorrect_guesses)
      /|\\  |
      / \\  |
           |
-    --------
     """,
     """
       -----
@@ -109,15 +101,32 @@ def display_hangman(incorrect_guesses)
      /|\\  |
      / \\  |
           |
-    --------
     """
   ]
 
   puts hangman_stages[incorrect_guesses]
 end
 
+# ASCII Art object of letters Congrats
+def display_congrats_message
+  message = <<-MESSAGE
+                                                                           ,d
+                                                                       88
+ ,adPPYba,  ,adPPYba,  8b,dPPYba,   ,adPPYb,d8 8b,dPPYba, ,adPPYYba, MM88MMM  ,adPPYba,
+a8"     "" a8"     "8a 88P'   `"8a a8"    `Y88 88P'   "Y8 ""     `Y8   88     I8[    ""
+8b         8b       d8 88       88 8b       88 88         ,adPPPPP88   88      `"Y8ba,
+"8a,   ,aa "8a,   ,a8" 88       88 "8a,   ,d88 88         88,    ,88   88,    aa    ]8I
+ `"Ybbd8"'  `"YbbdP"'  88       88  `"YbbdP"Y8 88         `"8bbdP"Y8   "Y888  `"YbbdP"'
+                                    aa,    ,88
+                                     "Y8bbdP"
+  MESSAGE
+
+  puts green_color(message)
+end
+
+
 def turns_taken incorrect_guesses
-   puts blue_color("You have #{MAX_TURNS - incorrect_guesses} turns left.")
+   puts blue_color("Player has #{MAX_TURNS - incorrect_guesses} turns left.")
 end
 
 # take a Hangman or Player position
@@ -165,7 +174,7 @@ def choose_word
   word = File.readlines(PATH_FILE).map(&:chomp).select { |word| word.length.between?(5, 12) }
   word.sample
 end
-# current_players(position) == 'h' ? puts 'Choose a word for Hangman: ' : 
+
 def initialize_turns word
   Array.new(word.length, ' ')
 end
@@ -202,7 +211,6 @@ end
 
 def play_game
   position = choose_position
-  # current_players(position)
 
   save_word = current_players(position)
   incorrect_guesses = 0
@@ -218,7 +226,6 @@ def play_game
       puts yellow_color("\n\nYou've already guessed the letter '#{letter}'. Try another one.")
       next
     end
-
     guessed_letters << letter
 
     if search_letter_in_word?(save_word, letter)
@@ -229,10 +236,11 @@ def play_game
       puts red_color("\n\nIncorrect. The letter '#{letter}' is not in the word.")
       incorrect_guesses += 1
     end
-    
+
     display_hangman(incorrect_guesses)
 
     if save_word.chars.all? { |char| guessed_letters.include?(char) }
+      display_congrats_message
       puts CELEBRATION_SYMBOL + " You guessed the word '#{save_word}'! " + CELEBRATION_SYMBOL
       break
     end
@@ -240,6 +248,7 @@ def play_game
     if incorrect_guesses == MAX_TURNS
       puts red_color("Game over! The word was '#{save_word}'.")
     end
+
   end
 end
 
