@@ -134,7 +134,7 @@ def display_game_over_message
     ┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼
   MESSAGE
 
-  puts message.colorize(:green)
+  puts message.colorize(:red)
 end
 
 def turns_taken incorrect_guesses
