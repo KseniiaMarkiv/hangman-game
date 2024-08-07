@@ -231,7 +231,7 @@ def load_game
 end
 
 def save_or_continue
-  puts ('Would you like to (s)ave the game or (c)ontinue playing?')
+  puts ('Would you like to (s)ave the game or (c)ontinue playing?').colorize(:color => :cyan)
   choice = gets.chomp.downcase
   until %w[s c].include?(choice)
     puts ('Invalid input. Please enter a valid string of s or c ' + "#{MUSHROOM_EMOJI}").colorize( :background => :red)
