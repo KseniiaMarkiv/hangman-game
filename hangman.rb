@@ -172,5 +172,27 @@ class Hangman
     end
   end
 
+  def main_menu
+    puts ('Would you like to (s)tart a new game or (l)oad a saved game?').colorize(:color => :cyan)
+    choice = gets.chomp.downcase
+    until %w[s l].include?(choice)
+      puts ('Invalid input. Please enter a valid string of s or l ' + "#{MUSHROOM_EMOJI}").colorize(:red)
+      choice = gets.chomp.downcase
+    end
+  
+    if choice == 'l'
+      if File.exist?("D:/00_main_job/main/English/23_11_interview/Course/repos/hangman-game/saved_game.yaml")
+        state = load_game
+        play_game(state)
+      else
+        puts ("No saved game found. Starting a new game.").colorize(:red)
+        play_game
+      end
+    else
+      play_game
+    end
+  end
+  
+
 end
 
