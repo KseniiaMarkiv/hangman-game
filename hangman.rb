@@ -10,6 +10,7 @@ class Hangman
     @incorrect_guesses = 0
     @guessed_letters = []
     @save_word = nil
+    @display_word = []
   end
 
     # Display Hangman stages
@@ -62,16 +63,13 @@ class Hangman
       puts ("Invalid choice. Please enter a word with 5 to 12 letters.").colorize(:background => :red)
       word = gets.chomp.downcase
     end
-    word
+    @save_word = word
+    @display_word = Array.new(@save_word.length, '_')
   end
 
   def choose_word
-    word = File.readlines(PATH_FILE).map(&:chomp).select { |word| word.length.between?(5, 12) }
-    word.sample
-  end
-
-  def initialize_turns word
-    Array.new(word.length, ' ')
+    @save_word = File.readlines(PATH_FILE).map(&:chomp).select { |word| word.length.between?(5, 12) }.sample
+    @display_word = Array.new(@save_word.length, '_')
   end
 
   def clean_display letter
@@ -82,8 +80,8 @@ class Hangman
     true
   end
 
-  def display_spaces word, guessed_letters
-    display_word = word.chars.map { |char| guessed_letters.include?(char) ? char.colorize(:green) : '_' }.join(' ')
+  def display_spaces
+    display_word = @save_word.chars.map { |char| @guessed_letters.include?(char) ? char.colorize(:green) : '_' }.join(' ')
     puts
     puts display_word
     puts
@@ -100,8 +98,8 @@ class Hangman
     letter
   end
 
-  def search_letter_in_word?(word, letter_to_check)
-    word.include?(letter_to_check)
+  def search_letter_in_word? letter_to_check
+    @save_word.include?(letter_to_check)
   end
 
   def save_game state
@@ -121,6 +119,57 @@ class Hangman
       choice = gets.chomp.downcase
     end
     choice
+  end
+
+  def play_game state = nil
+    if state.nil?
+      position = choose_position
+      current_players(position)
+      @incorrect_guesses = 0
+      @guessed_letters = []
+    else
+      @save_word, @incorrect_guesses, @guessed_letters = state
+    end
+   
+    while @incorrect_guesses < MAX_TURNS
+      display_spaces
+      letter = guess_letter
+  
+      if @guessed_letters.include?(letter)
+        puts ("\n\nYou've already guessed the letter '#{letter}'. Try another one.").colorize(:yellow)
+        next
+      end
+      @guessed_letters << letter
+  
+      if search_letter_in_word?(letter)
+        sleep 1
+        puts ("\n\nCorrect! The letter '#{letter}' is in the word.").colorize(:green)
+      else
+        sleep 1
+        puts ("\n\nIncorrect. The letter '#{letter}' is not in the word.").colorize(:red)
+        @incorrect_guesses += 1
+      end
+  
+      self.class.display_hangman(@incorrect_guesses)
+  
+      if @save_word.chars.all? { |char| @guessed_letters.include?(char) }
+        self.class.display_congrats_message
+        puts CELEBRATION_SYMBOL + " You guessed the word '#{@save_word}'! " + CELEBRATION_SYMBOL
+        break
+      end
+  
+      if @incorrect_guesses == MAX_TURNS
+        puts ("The word was '#{@save_word}'. \n").colorize(:red)
+        self.class.display_game_over_message
+      end
+      
+      choice = save_or_continue
+      if choice == 's'
+        save_game([@save_word, @incorrect_guesses, @guessed_letters])
+        break
+      end
+  
+    end
   end
 
 end
