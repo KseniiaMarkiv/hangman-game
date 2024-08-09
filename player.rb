@@ -1,26 +1,14 @@
-require 'colorize'
-require_relative 'symbols'
-
 class Player
-  attr_accessor :guessed_letters
+  attr_reader :guessed_letters
 
   def initialize
     @guessed_letters = []
   end
 
-  
-  def clean_display letter
-    unless letter.match?(/\A[a-zA-Z]\z/)
-      puts ("Invalid choice. Only letters are allowed and only 1 letter at a time.").colorize(:background => :red)
-      return false
-    end
-    true
-  end
-
   def guess_letter
     puts 'Write your letter, pls'
     letter = gets.chomp.downcase
-    until clean_display(letter)
+    until valid_letter?(letter)
       letter = gets.chomp.downcase
     end
     puts "Is there letter #{letter} in your word?"
@@ -34,6 +22,19 @@ class Player
   def letter_already_guessed? letter
     @guessed_letters.include?(letter)
   end
+
+  private
+
+  # rename from clean_display 
+  def valid_letter?(letter)
+    if letter.match?(/\A[a-zA-Z]\z/)
+      true
+    else
+      puts "Invalid choice. Only letters are allowed and only 1 letter at a time.".colorize(:background => :red)
+      false
+    end
+  end
+
 end
 
 
