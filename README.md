@@ -16,7 +16,10 @@ To set up the Hangman Game on your local machine, follow these steps:
 
 1. **Clone the Repository:**
    ```
-   git clone https://github.com/yourusername/hangman-game.git
+   git clone https://github.com/KseniiaMarkiv/hangman-game.git
+   ```
+   ```
+   git checkout start-game
    ```
    
    ```
@@ -38,7 +41,7 @@ Ensure the path to the dictionary file (google-10000-english-no-swears.txt) is c
 
 1. Run the game script:
   ```
-    ruby hangman_game.rb
+    ruby main.rb
   ```
 
 2. Choose your position:
@@ -59,7 +62,7 @@ Ensure the path to the dictionary file (google-10000-english-no-swears.txt) is c
 ## Example
 
   ```
-ruby hangman_game.rb
+ruby main.rb
   ```
 
 - Choose your position: `h` for Hangman, `p` for Player.
