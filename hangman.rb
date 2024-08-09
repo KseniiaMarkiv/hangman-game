@@ -56,10 +56,11 @@ class Hangman
     end
   end
 
-# actions for Player
-  def search_letter_in_word? letter_to_check
-    @save_word.include?(letter_to_check)
+  def turns_taken
+    puts ("Player has #{MAX_TURNS - @incorrect_guesses} turns left.").colorize(:blue)
   end
+
+  # actions for Player
 
   def save_game state
     File.open(File.join(SAVED_PATH, 'saved_game.yaml'), "w") { |file| file.write(state.to_yaml) }
@@ -80,18 +81,21 @@ class Hangman
     choice
   end
 
-  def play_game state = nil
+  def play_game(state = nil)
     if state.nil?
       position = choose_position
       current_players(position)
       @incorrect_guesses = 0
-      @player
+      @player.guessed_letters = []
+      @word.initialize_turns
     else
       @word.word, @incorrect_guesses, @player.guessed_letters = state
+      @player.guessed_letters = guessed_letters 
     end
    
     while @incorrect_guesses < MAX_TURNS
       @word.display_spaces(@player.guessed_letters)
+      turns_taken
       letter = @player.guess_letter
   
       if @player.letter_already_guessed?(letter)
@@ -114,7 +118,7 @@ class Hangman
   
       if @word.word.chars.all? { |char| @player.guessed_letters.include?(char) }
         self.class.display_congrats_message
-        puts CELEBRATION_SYMBOL + " You guessed the word '#{@save_word}'! " + CELEBRATION_SYMBOL
+        puts CELEBRATION_SYMBOL + " You guessed the word '#{@word.word}'! " + CELEBRATION_SYMBOL
         break
       end
   
@@ -122,18 +126,21 @@ class Hangman
         puts ("The word was '#{@word.word}'. \n").colorize(:red)
         self.class.display_game_over_message
       end
-      
+
+      @word.display_spaces(@player.guessed_letters)
+
       choice = save_or_continue
       if choice == 's'
         save_game([@word.word, @incorrect_guesses, @player.guessed_letters])
         break
       end
-  
+
     end
   end
 
   def main_menu
     puts ('Would you like to (s)tart a new game or (l)oad a saved game?').colorize(:color => :cyan)
+    puts
     choice = gets.chomp.downcase
     until %w[s l].include?(choice)
       puts ('Invalid input. Please enter a valid string of s or l ' + "#{MUSHROOM_EMOJI}").colorize(:red)
@@ -141,7 +148,7 @@ class Hangman
     end
   
     if choice == 'l'
-      if File.exist?("D:/00_main_job/main/English/23_11_interview/Course/repos/hangman-game/saved_game.yaml")
+      if File.exist?(File.join(SAVED_PATH, 'saved_game.yaml'))
         state = load_game
         play_game(state)
       else
@@ -152,7 +159,7 @@ class Hangman
       play_game
     end
   end
-  
 
 end
 
+Hangman.new.main_menu

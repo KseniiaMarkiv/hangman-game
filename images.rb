@@ -1,5 +1,3 @@
-# images.rb
-
 # Hangman stages array
 HANGMAN_STAGES =  [
   """
