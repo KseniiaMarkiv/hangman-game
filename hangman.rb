@@ -89,8 +89,9 @@ class Hangman
       @player.guessed_letters = []
       @word.initialize_turns
     else
-      @word.word, @incorrect_guesses, @player.guessed_letters = state
-      @player.guessed_letters = guessed_letters 
+      @word.instance_variable_set(:@word, state[0])   # Load the word from the saved state
+      @incorrect_guesses = state[1]                   # Load the incorrect guess count
+      @player.guessed_letters = state[2]              # Load the guessed letters
     end
    
     while @incorrect_guesses < MAX_TURNS
