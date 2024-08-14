@@ -92,7 +92,7 @@ This game was created by [Kseniia Markiv](https://github.com/KseniiaMarkiv). The
 
 > [!NOTE]  
 > link to the beginning of this game
-> [![](https://img.shields.io/badge/github-blue?style=for-the-badge)]([https://github.com/hamzamohdzubair/redant](https://github.com/KseniiaMarkiv/hangman-game/tree/start-game )
+> [![](https://img.shields.io/badge/github-blue?style=for-the-badge)](https://github.com/KseniiaMarkiv/hangman-game/tree/start-game)
 
 This section describes the refactoring steps that were undertaken to improve the structure, maintainability, and readability of the original codebase.
 
