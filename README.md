@@ -11,7 +11,7 @@ Welcome to the Hangman Game! This project is a simple command-line game where pl
 - [Example](#example)
 - [Credits](#credits)
 - [Refactoring Process](#refactoring)
-- [You can improve](#you_can_improve)
+- [You can improve](#you-can-improve)
 
 ## Installation
 
