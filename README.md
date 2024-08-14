@@ -10,7 +10,7 @@ Welcome to the Hangman Game! This project is a simple command-line game where pl
 - [Features](#features)
 - [Example](#example)
 - [Credits](#credits)
-- [Refactoring Process](refactoring-process)
+- [Refactoring Process](refactoring)
 - [You can improve](you_can_improve)
 
 ## Installation
@@ -89,6 +89,10 @@ This game was created using Ruby and the `colorize` gem. Special thanks to the d
 This game was created by [Kseniia Markiv](https://github.com/KseniiaMarkiv). The project was developed to practice object-oriented programming in Ruby 
 
 ### Refactoring
+
+> [!NOTE]  
+> link to the beginning of this game
+> [![](https://img.shields.io/badge/github-blue?style=for-the-badge)]([https://github.com/hamzamohdzubair/redant](https://github.com/KseniiaMarkiv/hangman-game/tree/start-game )
 
 This section describes the refactoring steps that were undertaken to improve the structure, maintainability, and readability of the original codebase.
 
