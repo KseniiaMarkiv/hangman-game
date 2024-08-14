@@ -10,8 +10,8 @@ Welcome to the Hangman Game! This project is a simple command-line game where pl
 - [Features](#features)
 - [Example](#example)
 - [Credits](#credits)
-- [Refactoring Process](refactoring)
-- [You can improve](you_can_improve)
+- [Refactoring Process](#refactoring)
+- [You can improve](#you_can_improve)
 
 ## Installation
 
